@@ -26,8 +26,8 @@ type JWTClaims struct {
 
 func NewService(repository Repository) Service {
 	return &service{
-		repository,
-		time.Duration(2) * time.Second,
+		Repository: repository,
+		timeout:    time.Duration(5) * time.Second,
 	}
 }
 
