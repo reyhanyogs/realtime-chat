@@ -42,11 +42,15 @@ const index = () => {
     }
   }
 
+  const registerHandler = (e: React.SyntheticEvent) => { 
+    router.push('/register')
+  }
+
   return (
     <div className='flex items-center justify-center min-w-full min-h-screen'>
       <form className='flex flex-col md:w-1/5'>
         <div className='text-3xl font-bold text-center'>
-          <span className='text-blue'>welcome!</span>
+          <span className='text-blue'>Welcome!</span>
         </div>
         <input
           placeholder='email'
@@ -66,8 +70,13 @@ const index = () => {
           type='submit'
           onClick={submitHandler}
         >
-          login
+          Login
         </button>
+        <div className='mt-2'>
+          <span className='text-blue cursor-pointer' onClick={registerHandler}>
+            Register here
+          </span>
+        </div>
       </form>
     </div>
   )

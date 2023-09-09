@@ -28,7 +28,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const userInfo = localStorage.getItem('user_info')
 
     if (!userInfo) {
-      if (window.location.pathname != '/signup') {
+      if (window.location.pathname != '/register') {
         router.push('/login')
         return
       }
