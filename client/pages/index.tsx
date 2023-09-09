@@ -10,6 +10,7 @@ const index = () => {
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([])
   const [roomName, setRoomName] = useState('')
   const { user } = useContext(AuthContext)
+  const { setAuthenticated } = useContext(AuthContext)
   const { setConn } = useContext(WebsocketContext)
 
   const router = useRouter()
@@ -56,6 +57,26 @@ const index = () => {
     }
   }
 
+  const logoutHandler = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch(`${API_URL}/logout`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+
+      if (res.ok) {
+        localStorage.removeItem('user_info')
+        setAuthenticated(false)
+        router.push('/login')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const joinRoom = (roomId: string) => {
     const ws = new WebSocket(
       `${WEBSOCKET_URL}/ws/joinRoom/${roomId}?userId=${user.id}&username=${user.username}`
@@ -69,6 +90,11 @@ const index = () => {
 
   return (
     <>
+    <div className='mt-2 ml-2'>
+        <span className='text-blue cursor-pointer' onClick={logoutHandler}>
+          Logout
+        </span>
+    </div>
       <div className='my-8 px-4 md:mx-32 w-full h-full'>
         <div className='flex justify-center mt-3 p-5'>
           <input
