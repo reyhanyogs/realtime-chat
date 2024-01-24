@@ -2,11 +2,11 @@ package user
 
 import (
 	"context"
-	"server/util"
 	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/reyhanyogs/realtime-chat/util"
 )
 
 const (

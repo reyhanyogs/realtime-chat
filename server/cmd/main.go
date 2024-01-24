@@ -2,10 +2,11 @@ package main
 
 import (
 	"log"
-	"server/db"
-	"server/internal/user"
-	"server/internal/ws"
-	"server/router"
+
+	"github.com/reyhanyogs/realtime-chat/db"
+	"github.com/reyhanyogs/realtime-chat/internal/user"
+	"github.com/reyhanyogs/realtime-chat/internal/ws"
+	"github.com/reyhanyogs/realtime-chat/router"
 )
 
 func main() {

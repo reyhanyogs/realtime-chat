@@ -1,12 +1,12 @@
 package router
 
 import (
-	"server/internal/user"
-	"server/internal/ws"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/reyhanyogs/realtime-chat/internal/user"
+	"github.com/reyhanyogs/realtime-chat/internal/ws"
 )
 
 var r *gin.Engine
