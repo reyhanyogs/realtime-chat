@@ -11,10 +11,13 @@ type Handler struct {
 	domain.Service
 }
 
-func NewHandler(s domain.Service) *Handler {
-	return &Handler{
+func NewHandler(r *gin.Engine, s domain.Service) {
+	handler := &Handler{
 		Service: s,
 	}
+	r.POST("/signup", handler.CreateUser)
+	r.POST("/login", handler.Login)
+	r.GET("/logout", handler.Logout)
 }
 
 func (h *Handler) CreateUser(c *gin.Context) {
@@ -33,7 +36,6 @@ func (h *Handler) CreateUser(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, res)
 }
 

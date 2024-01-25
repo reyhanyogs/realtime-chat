@@ -19,10 +19,14 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func NewHandler(h *Hub) *Handler {
-	return &Handler{
+func NewHandler(r *gin.Engine, h *Hub) {
+	handler := &Handler{
 		hub: h,
 	}
+	r.POST("/ws/createRoom", handler.CreateRoom)
+	r.GET("/ws/joinRoom/:roomId", handler.JoinRoom)
+	r.GET("/ws/getRooms", handler.GetRooms)
+	r.GET("/ws/getClients/:roomId", handler.GetClients)
 }
 
 type CreateRoomReq struct {
