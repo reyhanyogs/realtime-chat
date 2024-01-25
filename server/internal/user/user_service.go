@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/reyhanyogs/realtime-chat/domain"
 	"github.com/reyhanyogs/realtime-chat/util"
 )
 
@@ -14,7 +15,7 @@ const (
 )
 
 type service struct {
-	Repository
+	domain.Repository
 	timeout time.Duration
 }
 
@@ -24,14 +25,14 @@ type JWTClaims struct {
 	jwt.RegisteredClaims
 }
 
-func NewService(repository Repository) Service {
+func NewService(repository domain.Repository) domain.Service {
 	return &service{
 		Repository: repository,
 		timeout:    time.Duration(5) * time.Second,
 	}
 }
 
-func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUserRes, error) {
+func (s *service) CreateUser(c context.Context, req *domain.CreateUserReq) (*domain.CreateUserRes, error) {
 	ctx, cancel := context.WithTimeout(c, s.timeout)
 	defer cancel()
 
@@ -40,7 +41,7 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 		return nil, err
 	}
 
-	u := &User{
+	u := &domain.User{
 		Username: req.Username,
 		Email:    req.Email,
 		Password: hashedPassword,
@@ -51,7 +52,7 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 		return nil, err
 	}
 
-	res := &CreateUserRes{
+	res := &domain.CreateUserRes{
 		ID:       strconv.Itoa(int(r.ID)),
 		Username: r.Username,
 		Email:    r.Email,
@@ -60,18 +61,18 @@ func (s *service) CreateUser(c context.Context, req *CreateUserReq) (*CreateUser
 	return res, nil
 }
 
-func (s *service) Login(c context.Context, req *LoginUserReq) (*LoginUserRes, error) {
+func (s *service) Login(c context.Context, req *domain.LoginUserReq) (*domain.LoginUserRes, error) {
 	ctx, cancel := context.WithTimeout(c, s.timeout)
 	defer cancel()
 
 	u, err := s.Repository.GetUserByEmail(ctx, req.Email)
 	if err != nil {
-		return &LoginUserRes{}, err
+		return &domain.LoginUserRes{}, err
 	}
 
 	err = util.CheckPassword(req.Password, u.Password)
 	if err != nil {
-		return &LoginUserRes{}, err
+		return &domain.LoginUserRes{}, err
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
@@ -85,11 +86,11 @@ func (s *service) Login(c context.Context, req *LoginUserReq) (*LoginUserRes, er
 
 	signedString, err := token.SignedString([]byte(secretKey))
 	if err != nil {
-		return &LoginUserRes{}, err
+		return &domain.LoginUserRes{}, err
 	}
 
-	return &LoginUserRes{
-		accessToken: signedString,
+	return &domain.LoginUserRes{
+		AccessToken: signedString,
 		ID:          strconv.Itoa(int(u.ID)),
 		Username:    u.Username,
 	}, nil

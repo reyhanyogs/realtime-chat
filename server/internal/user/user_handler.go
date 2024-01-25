@@ -4,20 +4,21 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/reyhanyogs/realtime-chat/domain"
 )
 
 type Handler struct {
-	Service
+	domain.Service
 }
 
-func NewHandler(s Service) *Handler {
+func NewHandler(s domain.Service) *Handler {
 	return &Handler{
 		Service: s,
 	}
 }
 
 func (h *Handler) CreateUser(c *gin.Context) {
-	var u CreateUserReq
+	var u domain.CreateUserReq
 	if err := c.ShouldBindJSON(&u); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -37,7 +38,7 @@ func (h *Handler) CreateUser(c *gin.Context) {
 }
 
 func (h *Handler) Login(c *gin.Context) {
-	var user LoginUserReq
+	var user domain.LoginUserReq
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -53,9 +54,9 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwt", u.accessToken, 3600, "/", "localhost", false, true)
+	c.SetCookie("jwt", u.AccessToken, 3600, "/", "localhost", false, true)
 
-	res := &LoginUserRes{
+	res := &domain.LoginUserRes{
 		Username: u.Username,
 		ID:       u.ID,
 	}
