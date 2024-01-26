@@ -10,9 +10,9 @@ type User struct {
 }
 
 type CreateUserReq struct {
-	Username string `json:"username" db:"username"`
-	Email    string `json:"email" db:"email"`
-	Password string `json:"password" db:"password"`
+	Username string `json:"username" db:"username" binding:"required"`
+	Email    string `json:"email" db:"email" binding:"required"`
+	Password string `json:"password" db:"password" binding:"required"`
 }
 
 type CreateUserRes struct {
@@ -22,8 +22,8 @@ type CreateUserRes struct {
 }
 
 type LoginUserReq struct {
-	Email    string `json:"email" db:"email"`
-	Password string `json:"password" db:"password"`
+	Email    string `json:"email" db:"email" binding:"required"`
+	Password string `json:"password" db:"password" binding:"required"`
 }
 
 type LoginUserRes struct {

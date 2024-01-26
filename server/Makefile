@@ -16,4 +16,10 @@ migrateup:
 migratedown:
 	migrate -path db/migrations -database "postgresql://postgres:admin@localhost:5433/go-chat?sslmode=disable" -verbose down
 
-.PHONY: postgresinit postgres createdb dropdb migrateup migratedown
+mockuserservice:
+	mockgen -package=mocks -destination domain/mocks/Service.go github.com/reyhanyogs/realtime-chat/domain Service
+
+mockuserrepository:
+	mockgen -package=mocks -destination domain/mocks/Repository.go github.com/reyhanyogs/realtime-chat/domain Repository
+
+.PHONY: postgresinit postgres createdb dropdb migrateup migratedown mockuserservice mockuserrepository
