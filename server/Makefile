@@ -1,20 +1,20 @@
 postgresinit:
-	docker run --name postgres16 -p 5433:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin -d postgres
+	docker run --name realtimechat-postgres -p 5433:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -d postgres:16-alpine
 
 postgres:
-	docker exec -it postgres16 psql --username=postgres
+	docker exec -it realtimechat-postgres psql --username=admin
 
 createdb:
-	docker exec -it postgres16 createdb --username=postgres --owner=postgres go-chat
+	docker exec -it realtimechat-postgres createdb --username=admin --owner=admin go-chat
 
 dropdb:
-	docker exec -it postgres16 dropdb go-chat
+	docker exec -it realtimechat-postgres dropdb go-chat
 
 migrateup:
-	migrate -path db/migrations -database "postgresql://postgres:admin@localhost:5433/go-chat?sslmode=disable" -verbose up
+	migrate -path db/migrations -database "postgresql://admin:admin@localhost:5433/go-chat?sslmode=disable" -verbose up
 
 migratedown:
-	migrate -path db/migrations -database "postgresql://postgres:admin@localhost:5433/go-chat?sslmode=disable" -verbose down
+	migrate -path db/migrations -database "postgresql://admin:admin@localhost:5433/go-chat?sslmode=disable" -verbose down
 
 mockuserservice:
 	mockgen -package=mocks -destination domain/mocks/Service.go github.com/reyhanyogs/realtime-chat/domain Service
