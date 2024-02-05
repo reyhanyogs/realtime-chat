@@ -16,7 +16,10 @@ Before you begin, ensure you have met the following requirements:
 
 ## How to Run the Application
 Start the application by go to server folder and run:
+
 ```go run cmd/main.go```
+
 Then, go to client folder and run:
 ```npm run dev```
+
 After starting both the frontend and backend servers, open your web browser and go to `http://localhost:3000`
