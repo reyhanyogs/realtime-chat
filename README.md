@@ -23,7 +23,8 @@ go run cmd/main.go
 
 Then, go to client folder and run:
 
-```bashnpm run dev
+```bash
+npm run dev
 ```
 
 After starting both the frontend and backend servers, open your web browser and go to `http://localhost:3000`
