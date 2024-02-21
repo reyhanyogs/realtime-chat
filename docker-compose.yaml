@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=go-chat
+    ports:
+      - "5434:5432"
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - DB_SOURCE=postgresql://admin:admin@postgres:5432/go-chat?sslmode=disable
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    entrypoint:
+      [
+        "/app/wait-for",
+        "postgres:5432",
+        "--",
+        "/app/start.sh"
+      ]
+    command: [ "/app/main" ]
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
