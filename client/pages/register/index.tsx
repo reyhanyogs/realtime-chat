@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { UserInfo } from '../../modules/auth_provider'
 import { API_URL } from '../../constants'
 
-const index = () => {
+const Index = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -71,4 +71,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index
